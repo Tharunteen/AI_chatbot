@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 from langchain_nvidia_ai_endpoints import ChatNVIDIA
 
@@ -10,14 +11,13 @@ st.markdown("Chat with NVIDIA-hosted LLMs 🚀")
 # --- Sidebar Settings ---
 st.sidebar.header("⚙️ Model Settings")
 
+# Only include NVIDIA NIM models here
 model = st.sidebar.selectbox(
     "Choose Model",
     [
         "nvidia/nvidia-nemotron-nano-9b-v2",
-        "google/gemma-3-1b-it",
-        "meta/llama-3.1-405b-instruct",
-        "openai/gpt-oss-20b",
-        "deepseek-ai/deepseek-v3.1"
+        "nvidia/nemotron-4-340b-instruct",
+        "nvidia/llama-3-70b-instruct"
     ],
     index=0,
 )
@@ -32,6 +32,9 @@ max_output_tokens = st.sidebar.slider("Max Output Tokens", 64, 4096, 512, 64)
 if st.sidebar.button("🗑️ Reset Chat"):
     st.session_state.messages = []
 
+# Load API key from Streamlit secrets (you must set it in Streamlit Cloud > Settings > Secrets)
+api_key = st.secrets.get("NVIDIA_API_KEY")
+
 # Initialize LLM with chosen settings
 llm = ChatNVIDIA(
     model=model,
@@ -40,6 +43,7 @@ llm = ChatNVIDIA(
     top_k=top_k,
     repetition_penalty=repetition_penalty,
     max_output_tokens=max_output_tokens,
+    api_key=api_key,
 )
 
 # --- Chat Session State ---
