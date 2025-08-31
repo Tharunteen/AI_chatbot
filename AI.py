@@ -16,8 +16,10 @@ model = st.sidebar.selectbox(
     "Choose Model",
     [
         "nvidia/nvidia-nemotron-nano-9b-v2",
-        "nvidia/nemotron-4-340b-instruct",
-        "nvidia/llama-3-70b-instruct"
+        "google/gemma-3-1b-it",
+        "meta/llama-3.1-405b-instruct",
+        "openai/gpt-oss-20b",
+        "deepseek-ai/deepseek-v3.1"
     ],
     index=0,
 )
@@ -70,3 +72,4 @@ if prompt := st.chat_input("Type your message..."):
 
     # Store assistant response
     st.session_state.messages.append(("assistant", response.content))
+
